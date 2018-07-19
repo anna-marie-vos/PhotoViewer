@@ -9,3 +9,7 @@ Using python virtual env
 - `$ source ./bin/activate`
 - Deactivate the virtualenv:
 - `$ deactivate`
+
+## tkinter
+
+- https://www.python-course.eu/python_tkinter.php
