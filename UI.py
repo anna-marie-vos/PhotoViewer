@@ -1,8 +1,5 @@
-import tkinter as tk
+import tkinter
 
-root = tk.Tk()
-
-w = tk.Label(root, text="Hello Tkinter!")
-w.pack()
-
-root.mainloop()
+top = tkinter.Tk()
+# Code to add widgets will go here...
+top.mainloop()
