@@ -12,4 +12,6 @@ Using python virtual env
 
 ## tkinter
 
+- https://www.tutorialspoint.com/python/python_gui_programming.htm
 - https://www.python-course.eu/python_tkinter.php
+- https://stackoverflow.com/questions/43516019/python-tkinter-browse-folder-button
