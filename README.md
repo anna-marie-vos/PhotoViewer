@@ -15,3 +15,6 @@ Using python virtual env
 - https://www.tutorialspoint.com/python/python_gui_programming.htm
 - https://www.python-course.eu/python_tkinter.php
 - https://stackoverflow.com/questions/43516019/python-tkinter-browse-folder-button
+
+* https://www.pythonforbeginners.com/gui/how-to-use-pillow
+* https://pythonprogramming.net/tkinter-adding-text-images/
