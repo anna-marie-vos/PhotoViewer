@@ -12,30 +12,69 @@ class UI:
         self.window.wm_title("Photo Viewer")
         self.folderPath = StringVar()
         self.imagePath = ''
+        self.counter = 0
+        self.imageList=['item','item2','item3']
+
+        self.nextBtn = Button(self.window, text='back', width=6, command=lambda: self.goToPreviousImage("back"))
+        self.nextBtn.pack(side=LEFT)
 
         self.getFolderBtn = Button(self.window, text = "Select a Folder", width = 12, command=self.getFolder)
         self.getFolderBtn.pack()
 
-        self.folderLabel = Label(self.window,textvariable=self.folderPath)
-        self.folderLabel.pack()
+        self.nextBtn = Button(self.window, text='next', width=6, command=lambda: self.goToNextImage("next"))
+        self.nextBtn.pack(side=RIGHT)
+
 
     def getFolder(self):
         filename = filedialog.askdirectory()
         self.folderPath.set(filename)
         self.imageList = os.listdir(str(self.folderPath.get()))
+        print(self.imageList[0])
         self.openImage()
 
     def openImage(self):
-        for img in self.imageList:
-            if img.lower().endswith(('.png', '.jpg', '.jpeg')):
-                self.imagePath = (self.folderPath.get()+'/'+str(img))
-                print(self.imagePath)
-                load = Image.open(self.imagePath)
-                resized = load.resize((500,500),Image.ANTIALIAS)
-                render = ImageTk.PhotoImage(resized)
-                img = Label(self.window, width=500, height=500,image=render)
-                img.image = render
-                img.place(x=0, y=0)
+        self.img = self.imageList[self.counter]
+        if self.img.lower().endswith(('.png', '.jpg', '.jpeg')):
+            self.imagePath = (self.folderPath.get()+'/'+str(self.img))
+            load = Image.open(self.imagePath)
+            resized = load.resize((500,500),Image.ANTIALIAS)
+            render = ImageTk.PhotoImage(resized)
+            self.img = Label(self.window, width=500, height=500,image=render)
+            self.img.image = render
+            self.img.pack(side=BOTTOM)
+        else:
+            if self.buttonPress == "back":
+                self.goToPreviousImage("back")
+            else:
+                self.goToNextImage("next")
+
+    def goToNextImage (self, btnPress):
+        self.buttonPress = "next"
+
+        if not isinstance(self.img, str):
+            self.img.destroy()
+
+        if self.counter < len(self.imageList)-1:
+            self.counter += 1
+            self.openImage()
+
+        elif self.counter == len(self.imageList)-1:
+            self.counter = len(self.imageList)-1
+            self.openImage()
+        print('counter:',self.counter, 'length:',len(self.imageList), 'type:',type(self.img))
+
+    def goToPreviousImage (self, btnPress):
+        self.buttonPress = btnPress
+        if not isinstance(self.img, str):
+            self.img.destroy()
+
+        if self.counter > 0:
+            self.counter -= 1
+            self.openImage()
+
+        elif self.counter == 0:
+            self.counter = 0
+            self.openImage()
 
 
 root = Tk()
