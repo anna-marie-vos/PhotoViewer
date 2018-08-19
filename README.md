@@ -10,6 +10,11 @@ Using python virtual env
 - Deactivate the virtualenv:
 - `$ deactivate`
 
+## to work with pyinstaller
+
+- sudo find / -name pyinstaller
+- <my/own/path/pyinstaller> --onefile <your_script_name>.py
+
 ## tkinter
 
 - https://www.tutorialspoint.com/python/python_gui_programming.htm

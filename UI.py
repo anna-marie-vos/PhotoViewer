@@ -27,10 +27,13 @@ class UI:
         self.nextBtn = Button(self.window, text='next', width=6, command=lambda: self.goToNextImage("next"))
         self.nextBtn.grid(row=2, column=5)
 
-        self.thirtySecTimer = Button(self.window, text='30 seconds', width=12, command=lambda: self.start(1000))
+        self.displayCountdown = Label(self.window, text='', width =12)
+        self.displayCountdown.grid(row=3,column=1)
+
+        self.thirtySecTimer = Button(self.window, text='30 seconds', width=12, command=lambda: self.start(30000))
         self.thirtySecTimer.grid(row=3,column=2)
 
-        self.sixtySecTimer = Button(self.window, text='60 seconds', width=12, command=lambda: self.start(5000))
+        self.sixtySecTimer = Button(self.window, text='60 seconds', width=12, command=lambda: self.start(60000))
         self.sixtySecTimer.grid(row=3,column=3)
 
         self.pause = Button(self.window, text='Stop', width=12, command=self.pause)
@@ -49,7 +52,6 @@ class UI:
         if self.img.lower().endswith(('.png', '.jpg', '.jpeg')):
             self.imagePath = (self.folderPath.get()+'/'+str(self.img))
             load = Image.open(self.imagePath)
-            print('this is the size',load.size)
             self.resizeImg(load.size[0],load.size[1])
             resized = load.resize((self.newWidth, self.newHeight),Image.ANTIALIAS)
             render = ImageTk.PhotoImage(resized)
@@ -64,10 +66,13 @@ class UI:
                 self.goToNextImage("next")
 
     def resizeImg(self,width,height):
-        if(width >= height):
-            dividedBy = 800/width
-        if(height > width):
-            dividedBy = 600/height
+        dividedByWidth = 800/width
+        dividedByHeight = 600/height
+
+        if dividedByWidth <= dividedByHeight:
+            dividedBy = dividedByWidth
+        else:
+            dividedBy = dividedByHeight
 
         self.newWidth = int(width * dividedBy)
         self.newHeight = int(height * dividedBy)
@@ -100,31 +105,38 @@ class UI:
             self.openImage()
 
     def start(self, setTime):
-        # print('pressed')
         self.interval = setTime
         self.timeit = True
         self.setCountdown()
 
     def pause(self):
-        # print('pause clicked')
         self.interval = 0
         self.timeit = False
         self.setCountdown()
 
     def setCountdown(self):
-        print('timer', self.timeit)
-
         if self.counter == len(self.imageList)-1:
             self.counter = -1
 
         if self.timeit:
-            print('counter',self.interval)
-            # print('imagelist length',len(self.imageList))
             self.goToNextImage('next')
+            self.displayTime(self.interval)
             root.after(self.interval, self.setCountdown)
 
-
-
+    def displayTime(self, time):
+        if time >0:
+            if self.timeit:
+                currentTime = time
+                self.displayCountdown["text"]=('Timer: '+str(currentTime/1000))
+                root.after(1000, self.displayTime, currentTime-1000)
+            elif self.timeit:
+                currentTime = self.interval
+                self.displayCountdown["text"]=('Timer: '+str(currentTime/1000))
+                root.after(1000, self.displayTime, currentTime-1000)
+            else:
+                self.displayCountdown["text"]='stopped'
+        else:
+            self.displayCountdown["text"]=('Timer: '+str(self.interval/1000))
 
 root = Tk()
 app = UI(root)
